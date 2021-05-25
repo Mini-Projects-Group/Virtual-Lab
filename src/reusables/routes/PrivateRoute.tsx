@@ -6,12 +6,12 @@ const PrivateRoute: React.FC<RouteProps> = ({
   component: Component,
   ...rest
 }) => {
-  const isAuthenticated = localStorage.getItem("token") ? true : false;
+  const isAuthenticated = localStorage.getItem("vl-token") ? true : false;
   return (
     <Route
       {...rest}
       render={(props) =>
-        isAuthenticated ? <Component {...props} /> : <Redirect to="/" />
+        isAuthenticated ? <Component {...props} /> : <Redirect to='/' />
       }
     />
   );
