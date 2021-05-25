@@ -12,3 +12,5 @@ export const LIGHT2 = "#F5F8FA";
 export const WHITE = "#FFFFFF";
 
 export const OVERLAY = "#1da1f2bf";
+
+export const BASE_URL = "https://virtual-lab-backend.herokuapp.com";
