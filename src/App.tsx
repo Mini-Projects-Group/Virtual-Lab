@@ -1,25 +1,19 @@
+import { Spin } from "antd";
+import jwt_decode from "jwt-decode";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import Landing from "./components/Landing/Landing";
 import Login from "./components/Login/Login";
-
+import { getUser } from "./redux/action";
 import PrivateRoute from "./reusables/routes/PrivateRoute";
 import PublicRoute from "./reusables/routes/PublicRoute";
-
-import jwt_decode from "jwt-decode";
-import { getUser } from "./redux/action";
-import { AppState } from "./redux/reducer";
 
 function App() {
   const token = localStorage.getItem("vl-token");
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-
-  // const data = useSelector((state: AppState) => state.userReducer);
-
-  // console.log(data);
 
   useEffect(() => {
     (async () => {
@@ -28,16 +22,19 @@ function App() {
 
         const { _id, userType } = decoded;
 
-        await dispatch(getUser(_id));
-
         setLoading(true);
-        dispatch(getUser());
+        await dispatch(getUser(_id));
         setLoading(false);
       }
     })();
   }, [dispatch, token]);
 
-  if (loading) return <div>Loading....</div>;
+  if (loading)
+    return (
+      <div className='App'>
+        <Spin />
+      </div>
+    );
 
   return (
     <Router>

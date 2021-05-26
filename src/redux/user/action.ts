@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios";
 import { Dispatch } from "redux";
 import { AppActionsTypes, BAD_STATUS } from "..";
-import { SET_ERROR } from "../error/types";
+import { CLEAR_ERROR, SET_ERROR } from "../error/types";
 import { AppState } from "../reducer";
 import { async_func_data } from "../utils/helperfunctions";
 import { LOGIN_FAIL, LOGIN_SUCCESS, USER_LOADED } from "./types";
@@ -42,19 +42,19 @@ export const login_user =
           payload: {
             token: response.data.token,
             userData: response.data.user,
-            // userType,
-            // _id,
           },
         });
+
+        const decoded: any = jwt_decode(response.data.token);
+
+        const { _id, userType } = decoded;
+
+        await dispatch(getUser(_id));
+
+        await dispatch({
+          type: CLEAR_ERROR,
+        });
       }
-
-      const decoded: any = jwt_decode(response.data.token);
-
-      const { _id, userType } = decoded;
-
-      //console.log(_id, userType);
-
-      await dispatch(getUser(_id));
 
       return res;
     } catch (err) {
@@ -72,8 +72,6 @@ export const getUser: any =
         true
       );
 
-      console.log(res);
-
       const {
         name,
         email,
@@ -84,7 +82,7 @@ export const getUser: any =
         subjects,
         batch,
         div,
-      } = res.data.userData;
+      } = res.data?.userData;
 
       const data: any = {
         name,

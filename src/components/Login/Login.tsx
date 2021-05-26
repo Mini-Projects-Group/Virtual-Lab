@@ -14,23 +14,20 @@ const Login = () => {
 
   const [redirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
-  // const [error, setError] = useState(null);
 
   const error = useSelector((state: AppState) => state.errorReducer?.msg);
 
   const handleSubmit = async (props) => {
     const { email, password } = props;
     setLoading(true);
-    //console.log("Success", props);
 
     const response = await dispatch(login_user(email, password));
 
-    console.log(response);
     setLoading(false);
 
     if (
       (response as any)?.status !== BAD_STATUS &&
-      !(response as any).data?.error
+      !(response as any)?.data.error
     ) {
       setRedirect(true);
     }
@@ -51,7 +48,10 @@ const Login = () => {
         onFinishFailed={handleFailure}
       >
         {error && <Alert message='Invalid Credentials' type='error' />}
-        <Form.Item name='userType' rules={[{ required: true }]}>
+        <Form.Item
+          name='userType'
+          rules={[{ required: true, message: "Please select a user type!" }]}
+        >
           <Radio.Group>
             <Radio value='faculty'>Faculty</Radio>
             <Radio value='student'>Student</Radio>
