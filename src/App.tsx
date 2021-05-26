@@ -3,6 +3,7 @@ import jwt_decode from "jwt-decode";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
+import Dashboard from "./components/Dashboard/Dashboard";
 import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
 import Landing from "./components/Landing/Landing";
 import Login from "./components/Login/Login";
@@ -12,6 +13,7 @@ import PublicRoute from "./reusables/routes/PublicRoute";
 
 function App() {
   const token = localStorage.getItem("vl-token");
+  const type = localStorage.getItem("vl-type");
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -24,7 +26,7 @@ function App() {
         const { _id, userType } = decoded;
 
         setLoading(true);
-        await dispatch(getUser(_id));
+        await dispatch(getUser(_id, userType));
         setLoading(false);
       }
     })();
@@ -48,7 +50,7 @@ function App() {
             path='/reset-password'
             component={ForgotPassword}
           />
-          <PrivateRoute exact path='/auth' component={() => <h1>Auth</h1>} />
+          <PrivateRoute exact path='/auth' component={Dashboard} />
         </Switch>
       </div>
     </Router>

@@ -15,9 +15,9 @@ export interface UserData {
   email: string;
   id: string;
   createdAt: string | null;
-  type: boolean;
   registration_id: string;
   roll_no: number;
+  type: string;
 }
 
 export type Token = string | null;
