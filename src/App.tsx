@@ -3,6 +3,7 @@ import jwt_decode from "jwt-decode";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
+import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
 import Landing from "./components/Landing/Landing";
 import Login from "./components/Login/Login";
 import { getUser } from "./redux/action";
@@ -42,6 +43,11 @@ function App() {
         <Switch>
           <PublicRoute exact path='/' component={Landing} />
           <PublicRoute exact path='/login' component={Login} />
+          <PublicRoute
+            exact
+            path='/reset-password'
+            component={ForgotPassword}
+          />
           <PrivateRoute exact path='/auth' component={() => <h1>Auth</h1>} />
         </Switch>
       </div>
