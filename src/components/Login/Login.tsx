@@ -140,14 +140,16 @@ const Login = () => {
           </Button>
         </Form.Item>
 
-        <div onClick={handleForgot}>Forgot Password?</div>
+        <div onClick={handleForgot} className={styles.forgotText}>
+          Forgot Password ?
+        </div>
         <Modal
           title='Forgot Password'
           visible={isModalVisible}
           onCancel={() => setIsModalVisible(false)}
           onOk={confirmForgot}
         >
-          <div>
+          <div className={styles.forgotModal}>
             <Radio.Group
               value={forgotType}
               onChange={(e) => setForgotType(e.target.value)}

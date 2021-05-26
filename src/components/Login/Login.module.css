@@ -4,13 +4,31 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  background-color: #1da1f2;
 }
 
 .form {
-  /* background-color: aqua; */
+  background-color: white;
+
+  padding: 50px 50px;
+  border-radius: 7px;
+
+  color: #1da1f2;
 
   /* display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center; */
+}
+
+.forgotText {
+  display: inline-block;
+
+  cursor: pointer;
+  border-bottom: 1px solid #1da1f2;
+}
+
+.forgotModal {
+  padding: 10px 40px;
 }
