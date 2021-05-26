@@ -29,6 +29,8 @@ export interface UserState {
   session_expired: boolean;
 
   isLoading: boolean;
+  // _id: string;
+  // userType: string;
 }
 
 //Action

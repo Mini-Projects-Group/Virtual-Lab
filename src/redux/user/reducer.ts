@@ -16,6 +16,8 @@ const initialState: UserState = {
   userData: null,
   session_expired: false,
   isLoading: false,
+  // _id: null,
+  // userType: null,
 };
 
 export default (state = initialState, action: UserActionsType): UserState => {
@@ -39,11 +41,14 @@ export default (state = initialState, action: UserActionsType): UserState => {
       };
     case LOGIN_SUCCESS:
       localStorage.setItem("vl-token", action.payload.token);
+      //localStorage.setItem("vl-type", action.payload.userType);
       return {
         ...state,
         isLoading: false,
         token: action.payload.token,
         userData: action.payload.userData,
+        // userType: action.payload.userType,
+        // _id: action.payload._id,
       };
     case REGISTER_SUCCESS:
       return {
@@ -55,6 +60,7 @@ export default (state = initialState, action: UserActionsType): UserState => {
     case LOGOUT_SUCCESS:
     case AUTH_ERROR:
       localStorage.removeItem("vl-token");
+      localStorage.removeItem("vl-type");
       return {
         ...state,
         userData: null,

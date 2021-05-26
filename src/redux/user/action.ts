@@ -4,7 +4,7 @@ import { AppActionsTypes, BAD_STATUS } from "..";
 import { SET_ERROR } from "../error/types";
 import { AppState } from "../reducer";
 import { async_func_data } from "../utils/helperfunctions";
-import { LOGIN_FAIL, LOGIN_SUCCESS } from "./types";
+import { LOGIN_FAIL, LOGIN_SUCCESS, USER_LOADED } from "./types";
 
 import jwt_decode from "jwt-decode";
 
@@ -37,9 +37,6 @@ export const login_user =
           },
         });
       } else {
-        let decoded = jwt_decode(response.data.token);
-        console.log(decoded);
-
         await dispatch({
           type: LOGIN_SUCCESS,
           payload: {
@@ -50,56 +47,65 @@ export const login_user =
           },
         });
       }
+
+      const decoded: any = jwt_decode(response.data.token);
+
+      const { _id, userType } = decoded;
+
+      //console.log(_id, userType);
+
+      await dispatch(getUser(_id));
+
       return res;
     } catch (err) {
       console.log(err);
     }
   };
 
-// export const getUser = () => async (dispatch, getState) => {
-//   try {
-//     const res = await async_func_data(
-//       "/api/student/getUser",
-//       null,
-//       "get",
-//       true
-//     );
+export const getUser: any =
+  (_id: any) => async (dispatch: any, getState: any) => {
+    try {
+      const res = await async_func_data(
+        "/api/student/getUser",
+        { _id },
+        "get",
+        true
+      );
 
-//     const {
-//       name,
-//       email,
-//       roll_no,
-//       registration_id,
-//       year,
-//       branch,
-//       subjects,
-//       batch,
-//       div,
-//     } = res.data;
+      console.log(res);
 
-//     const data: UserData = {
-//       name,
-//       email,
+      const {
+        name,
+        email,
+        roll_no,
+        registration_id,
+        year,
+        branch,
+        subjects,
+        batch,
+        div,
+      } = res.data.userData;
 
-//       roll_no,
-//       registration_id,
-//       year,
-//       branch,
-//       subjects,
-//       batch,
-//       div,
-//     };
+      const data: any = {
+        name,
+        email,
+        roll_no,
+        registration_id,
+        year,
+        branch,
+        subjects,
+        batch,
+        div,
+      };
 
-//     await dispatch({
-//       type: USER_LOADED,
-//       payload: {
-//         token: localStorage.getItem("vl-token"),
-//         userData: data,
-//       },
-//     });
-
-//     console.log(res);
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
+      await dispatch({
+        type: USER_LOADED,
+        payload: {
+          token: localStorage.getItem("vl-token"),
+          userData: data,
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
