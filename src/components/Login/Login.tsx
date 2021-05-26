@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { Button, Form, Input, Checkbox, Radio, Alert } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  Checkbox,
+  Radio,
+  Alert,
+  Modal,
+  notification,
+} from "antd";
 import axios from "axios";
 import styles from "./Login.module.css";
 
@@ -8,12 +17,15 @@ import { login_user } from "../../redux/action";
 import { BAD_STATUS } from "../../redux";
 import { Redirect } from "react-router-dom";
 import { AppState } from "../../redux/reducer";
+import { async_func_data } from "../../redux/utils/helperfunctions";
 
 const Login = () => {
   const dispatch = useDispatch();
 
   const [redirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
 
   const error = useSelector((state: AppState) => state.errorReducer?.msg);
 
@@ -24,7 +36,6 @@ const Login = () => {
     const response = await dispatch(login_user(email, password));
 
     setLoading(false);
-
     if (
       (response as any)?.status !== BAD_STATUS &&
       !(response as any)?.data.error
@@ -35,6 +46,38 @@ const Login = () => {
 
   const handleFailure = (props) => {
     console.log("Failure");
+  };
+
+  const handleForgot = () => {
+    setIsModalVisible(true);
+  };
+
+  const confirmForgot = async (e) => {
+    //console.log(forgotEmail);
+
+    // API call
+    const response = await async_func_data(
+      "/api/student/forgotPassword",
+      { email: forgotEmail },
+      "post",
+      false
+    );
+
+    console.log(response);
+
+    setIsModalVisible(false);
+
+    notification["success"]({
+      message: "Email Sent",
+      description:
+        "A link to reset your password has been sent to your email. Please check your inbox.",
+      onClick: () => {
+        console.log("Notification Clicked!");
+      },
+      duration: 10,
+    });
+
+    setForgotEmail("");
   };
 
   if (redirect) return <Redirect to='/auth' />;
@@ -83,6 +126,23 @@ const Login = () => {
             Log In
           </Button>
         </Form.Item>
+
+        <div onClick={handleForgot}>Forgot Password?</div>
+        <Modal
+          title='Forgot Password'
+          visible={isModalVisible}
+          onCancel={() => setIsModalVisible(false)}
+          onOk={confirmForgot}
+        >
+          Enter the email ID linked with the account.
+          <Input
+            placeholder='Enter Email ID'
+            name='forgot-email'
+            value={forgotEmail}
+            onChange={(email) => setForgotEmail(email.target.value)}
+            type='email'
+          />
+        </Modal>
       </Form>
     </div>
   );
