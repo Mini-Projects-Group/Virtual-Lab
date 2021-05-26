@@ -9,20 +9,22 @@ import { LOGIN_FAIL, LOGIN_SUCCESS, USER_LOADED } from "./types";
 import jwt_decode from "jwt-decode";
 
 export const login_user =
-  (email: string, password: string) =>
+  (email: string, password: string, type: string) =>
   async (
     dispatch: Dispatch<AppActionsTypes>,
     getState: () => AppState
   ): Promise<AxiosResponse<any>> => {
     try {
       const res = await async_func_data(
-        "/api/student/login",
-        { email, password },
+        "/api/user/login",
+        { email, password, type },
         "post",
         false
       );
 
       const response = res;
+
+      console.log(response);
 
       if (res.status === BAD_STATUS || res.data?.error) {
         await dispatch({
@@ -49,7 +51,7 @@ export const login_user =
 
         const { _id, userType } = decoded;
 
-        await dispatch(getUser(_id));
+        await dispatch(getUser(_id, userType));
 
         await dispatch({
           type: CLEAR_ERROR,
@@ -63,11 +65,13 @@ export const login_user =
   };
 
 export const getUser: any =
-  (_id: any) => async (dispatch: any, getState: any) => {
+  (_id: any, type: string) => async (dispatch: any, getState: any) => {
     try {
       const res = await async_func_data(
-        "/api/student/getUser",
-        { _id },
+        type === "student"
+          ? "/api/user/getUser/student"
+          : "/api/user/getUser/faculty",
+        { _id, type },
         "get",
         true
       );

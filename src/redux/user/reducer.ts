@@ -41,7 +41,7 @@ export default (state = initialState, action: UserActionsType): UserState => {
       };
     case LOGIN_SUCCESS:
       localStorage.setItem("vl-token", action.payload.token);
-      //localStorage.setItem("vl-type", action.payload.userType);
+      //localStorage.setItem("vl-type", action.payload.userData.type);
       return {
         ...state,
         isLoading: false,

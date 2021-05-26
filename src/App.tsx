@@ -12,6 +12,7 @@ import PublicRoute from "./reusables/routes/PublicRoute";
 
 function App() {
   const token = localStorage.getItem("vl-token");
+  const type = localStorage.getItem("vl-type");
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -24,7 +25,7 @@ function App() {
         const { _id, userType } = decoded;
 
         setLoading(true);
-        await dispatch(getUser(_id));
+        await dispatch(getUser(_id, userType));
         setLoading(false);
       }
     })();

@@ -25,15 +25,20 @@ const Login = () => {
   const [redirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+
   const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotType, setForgotType] = useState("");
 
   const error = useSelector((state: AppState) => state.errorReducer?.msg);
 
   const handleSubmit = async (props) => {
-    const { email, password } = props;
+    const { email, password, userType } = props;
+
+    //console.log(userType);
+
     setLoading(true);
 
-    const response = await dispatch(login_user(email, password));
+    const response = await dispatch(login_user(email, password, userType));
 
     setLoading(false);
     if (
@@ -53,12 +58,12 @@ const Login = () => {
   };
 
   const confirmForgot = async (e) => {
-    //console.log(forgotEmail);
+    // console.log(forgotEmail, forgotType);
 
     // API call
     const response = await async_func_data(
-      "/api/student/forgotPassword",
-      { email: forgotEmail },
+      "/api/user/forgotPassword",
+      { email: forgotEmail, type: forgotType },
       "post",
       false
     );
@@ -67,17 +72,25 @@ const Login = () => {
 
     setIsModalVisible(false);
 
-    notification["success"]({
-      message: "Email Sent",
-      description:
-        "A link to reset your password has been sent to your email. Please check your inbox.",
-      onClick: () => {
-        console.log("Notification Clicked!");
-      },
-      duration: 10,
-    });
+    if (response.data.error) {
+      notification["error"]({
+        message: "Wrong Type",
+        description: response.data?.message,
+
+        duration: 10,
+      });
+    } else {
+      notification["success"]({
+        message: "Email Sent",
+        description:
+          "A link to reset your password has been sent to your email. Please check your inbox.",
+
+        duration: 10,
+      });
+    }
 
     setForgotEmail("");
+    setForgotType("");
   };
 
   if (redirect) return <Redirect to='/auth' />;
@@ -134,6 +147,15 @@ const Login = () => {
           onCancel={() => setIsModalVisible(false)}
           onOk={confirmForgot}
         >
+          <div>
+            <Radio.Group
+              value={forgotType}
+              onChange={(e) => setForgotType(e.target.value)}
+            >
+              <Radio value='faculty'>Faculty</Radio>
+              <Radio value='student'>Student</Radio>
+            </Radio.Group>
+          </div>
           Enter the email ID linked with the account.
           <Input
             placeholder='Enter Email ID'
