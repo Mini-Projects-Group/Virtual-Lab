@@ -43,8 +43,7 @@ function App() {
   return (
     <Router>
       <div className='App'>
-        <LabCard />
-        {/* <Switch>
+        <Switch>
           <PublicRoute exact path='/' component={Landing} />
           <PublicRoute exact path='/login' component={Login} />
           <PublicRoute
@@ -53,7 +52,7 @@ function App() {
             component={ForgotPassword}
           />
           <PrivateRoute exact path='/auth' component={Dashboard} />
-        </Switch> */}
+        </Switch>
       </div>
     </Router>
   );
