@@ -10,7 +10,7 @@ const PublicRoute: React.FC<RouteProps> = ({
     <Route
       {...rest}
       render={(props) => {
-        return !token ? <Component {...props} /> : <Redirect to='/auth' />;
+        return !token ? <Component {...props} /> : <Redirect to="/auth" />;
       }}
     />
   );
