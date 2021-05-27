@@ -29,11 +29,14 @@ const Login = () => {
   const [forgotEmail, setForgotEmail] = useState("");
   const [forgotType, setForgotType] = useState("");
 
+  const [userType, setUserType] = useState("");
+
   const error = useSelector((state: AppState) => state.errorReducer?.msg);
 
   const handleSubmit = async (props) => {
     const { email, password, userType } = props;
 
+    setUserType(userType);
     //console.log(userType);
 
     setLoading(true);
@@ -93,49 +96,54 @@ const Login = () => {
     setForgotType("");
   };
 
-  if (redirect) return <Redirect to='/auth' />;
+  if (redirect)
+    return userType === "student" ? (
+      <Redirect to="/sdashboard" />
+    ) : (
+      <Redirect to="/fdashboard" />
+    );
 
   return (
     <div className={styles.root}>
       <Form
-        name='basic'
+        name="basic"
         className={styles.form}
         onFinish={handleSubmit}
         onFinishFailed={handleFailure}
       >
-        {error && <Alert message='Invalid Credentials' type='error' />}
+        {error && <Alert message="Invalid Credentials" type="error" />}
         <Form.Item
-          name='userType'
+          name="userType"
           rules={[{ required: true, message: "Please select a user type!" }]}
         >
           <Radio.Group>
-            <Radio value='faculty'>Faculty</Radio>
-            <Radio value='student'>Student</Radio>
+            <Radio value="faculty">Faculty</Radio>
+            <Radio value="student">Student</Radio>
           </Radio.Group>
         </Form.Item>
 
         <Form.Item
-          name='email'
-          label='Email ID'
+          name="email"
+          label="Email ID"
           rules={[{ required: true, message: "Email ID cannot be empty!" }]}
         >
-          <Input type='email' />
+          <Input type="email" />
         </Form.Item>
 
         <Form.Item
-          name='password'
-          label='Password'
+          name="password"
+          label="Password"
           rules={[{ required: true, message: "Password cannot be empty!" }]}
         >
           <Input.Password />
         </Form.Item>
 
-        <Form.Item name='remember' valuePropName='checked'>
+        <Form.Item name="remember" valuePropName="checked">
           <Checkbox defaultChecked={false}>Remember me</Checkbox>
         </Form.Item>
 
         <Form.Item>
-          <Button htmlType='submit' loading={loading}>
+          <Button htmlType="submit" loading={loading}>
             Log In
           </Button>
         </Form.Item>
@@ -144,7 +152,7 @@ const Login = () => {
           Forgot Password ?
         </div>
         <Modal
-          title='Forgot Password'
+          title="Forgot Password"
           visible={isModalVisible}
           onCancel={() => setIsModalVisible(false)}
           onOk={confirmForgot}
@@ -154,17 +162,17 @@ const Login = () => {
               value={forgotType}
               onChange={(e) => setForgotType(e.target.value)}
             >
-              <Radio value='faculty'>Faculty</Radio>
-              <Radio value='student'>Student</Radio>
+              <Radio value="faculty">Faculty</Radio>
+              <Radio value="student">Student</Radio>
             </Radio.Group>
           </div>
           Enter the email ID linked with the account.
           <Input
-            placeholder='Enter Email ID'
-            name='forgot-email'
+            placeholder="Enter Email ID"
+            name="forgot-email"
             value={forgotEmail}
             onChange={(email) => setForgotEmail(email.target.value)}
-            type='email'
+            type="email"
           />
         </Modal>
       </Form>
