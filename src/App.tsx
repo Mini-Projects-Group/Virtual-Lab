@@ -12,6 +12,7 @@ import TeacherDashboard from "./components/TeacherDashboard/TeacherDashboard";
 import { getUser } from "./redux/action";
 import PrivateRoute from "./reusables/routes/PrivateRoute";
 import PublicRoute from "./reusables/routes/PublicRoute";
+import Lab from "./components/Lab/Lab";
 
 function App() {
   const token = localStorage.getItem("vl-token");
@@ -55,6 +56,7 @@ function App() {
           <PrivateRoute exact path="/auth" component={Dashboard} />
           <PrivateRoute exact path="/fdashboard" component={TeacherDashboard} />
           <PrivateRoute exact path="/sdashboard" component={StudentDashboard} />
+          <PrivateRoute exact path="/lab/:labId" component={Lab} />
         </Switch>
       </div>
     </Router>
