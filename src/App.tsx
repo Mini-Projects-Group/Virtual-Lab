@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import Dashboard from "./components/Dashboard/Dashboard";
 import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
+import LabCard from "./components/LabCard/LabCard";
 import Landing from "./components/Landing/Landing";
 import Login from "./components/Login/Login";
 import { getUser } from "./redux/action";
@@ -42,7 +43,8 @@ function App() {
   return (
     <Router>
       <div className='App'>
-        <Switch>
+        <LabCard />
+        {/* <Switch>
           <PublicRoute exact path='/' component={Landing} />
           <PublicRoute exact path='/login' component={Login} />
           <PublicRoute
@@ -51,7 +53,7 @@ function App() {
             component={ForgotPassword}
           />
           <PrivateRoute exact path='/auth' component={Dashboard} />
-        </Switch>
+        </Switch> */}
       </div>
     </Router>
   );
