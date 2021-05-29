@@ -1,18 +1,18 @@
-import React, { useReducer, useState } from "react";
-import { Layout, Menu } from "antd";
 import {
   FileOutlined,
-  TeamOutlined,
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
   LogoutOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  TeamOutlined,
 } from "@ant-design/icons";
-import { WHITE } from "../../reusables/constants";
+import { Layout, Menu } from "antd";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppState } from "../../redux/reducer";
 import { useHistory } from "react-router";
-import Team from "../Team/Team";
+import { AppState } from "../../redux/reducer";
+import { WHITE } from "../../reusables/constants";
 import Files from "../Files/Files";
+import Team from "../Team/Team";
 
 const { Header, Sider, Content } = Layout;
 

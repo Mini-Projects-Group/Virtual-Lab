@@ -1,5 +1,5 @@
 import { FileOutlined, LogoutOutlined, CloseOutlined } from "@ant-design/icons";
-import { Layout, Menu, Upload, Button } from "antd";
+import { Layout, Menu, Upload, Button, Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
@@ -20,6 +20,8 @@ const Lab = (props) => {
   const [labData, setLabData] = useState({});
   const [loading, setLoading] = useState(false);
   const [imageName, setImageName] = useState("");
+
+  const [resources, setResources] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -49,7 +51,10 @@ const Lab = (props) => {
           .child(itemRef.fullPath)
           .getDownloadURL();
 
-        console.log(imgURL);
+        //console.log(itemRef);
+
+        setResources((prev) => [...prev, { url: imgURL, name: itemRef.name }]);
+        //console.log(imgURL);
       });
     })();
   }, []);
@@ -76,7 +81,7 @@ const Lab = (props) => {
   };
 
   const handleChange = (info) => {
-    console.log(info);
+    //console.log(info);
     // if (info.file.status === "uploading") {
     //   setLoading(true);
     //   return;
@@ -92,13 +97,11 @@ const Lab = (props) => {
   };
 
   const beforeUpload = (file) => {
-    console.log(file);
-
+    //console.log(file);
     // const isImage = file.type.indexOf("image/") === 0;
     // if (!isImage) {
     //   alert("You can only upload image file!");
     // }
-
     // // You can remove this validation if you want
     // const isLt5M = file.size / 1024 / 1024 < 5;
     // if (!isLt5M) {
@@ -132,6 +135,10 @@ const Lab = (props) => {
       onError(e);
     }
   };
+
+  const handleDownload = (item) => {};
+
+  console.log(resources);
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -198,6 +205,16 @@ const Lab = (props) => {
               // headers={{ authorization: "authorization-text" }}
             >
               <Button icon={<UploadOutlined />}>Click to Upload</Button>
+
+              {resources.length ? (
+                resources?.map((item, idx) => (
+                  <div key={idx} onClick={() => handleDownload(item)}>
+                    {item.name}
+                  </div>
+                ))
+              ) : (
+                <Spin />
+              )}
             </Upload>
           ) : null}
         </Content>

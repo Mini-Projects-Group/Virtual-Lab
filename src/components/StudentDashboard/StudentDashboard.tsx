@@ -11,6 +11,8 @@ import { WHITE } from "../../reusables/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../redux/reducer";
 import { useHistory } from "react-router";
+import Team from "../Team/Team";
+import Files from "../Files/Files";
 
 const { Header, Sider, Content } = Layout;
 
@@ -21,6 +23,8 @@ const StudentDashboard = () => {
 
   const history = useHistory();
   const dispatch = useDispatch();
+
+  const [selectedOption, setSelectedOption] = useState<any>("team");
 
   const toggle = () => {
     setState((prev) => {
@@ -56,7 +60,7 @@ const StudentDashboard = () => {
         }}
       >
         <div
-          className="logo"
+          className='logo'
           style={{
             display: "flex",
             color: WHITE,
@@ -66,20 +70,28 @@ const StudentDashboard = () => {
         >
           {name}
         </div>
-        <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
-          <Menu.Item key="sub2" icon={<TeamOutlined />}>
+        <Menu theme='dark' defaultSelectedKeys={["team"]} mode='inline'>
+          <Menu.Item
+            key='team'
+            icon={<TeamOutlined />}
+            onClick={(e) => setSelectedOption(e.key)}
+          >
             Team
           </Menu.Item>
-          <Menu.Item key="9" icon={<FileOutlined />}>
+          <Menu.Item
+            key='files'
+            icon={<FileOutlined />}
+            onClick={(e) => setSelectedOption(e.key)}
+          >
             Files
           </Menu.Item>
-          <Menu.Item key="10" icon={<LogoutOutlined />} onClick={handleLogout}>
+          <Menu.Item key='10' icon={<LogoutOutlined />} onClick={handleLogout}>
             Logout
           </Menu.Item>
         </Menu>
       </Sider>
-      <Layout className="site-layout">
-        <Header className="site-layout-background" style={{ padding: "10px" }}>
+      <Layout className='site-layout'>
+        <Header className='site-layout-background' style={{ padding: "10px" }}>
           {React.createElement(
             state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
             {
@@ -89,14 +101,22 @@ const StudentDashboard = () => {
           )}
         </Header>
         <Content
-          className="site-layout-background"
+          className='site-layout-background'
           style={{
             margin: "24px 16px",
             padding: 24,
             minHeight: 2080,
+            background: "green",
+            marginLeft: "200px",
           }}
         >
-          Content
+          {selectedOption === "team" ? (
+            <Team />
+          ) : selectedOption === "files" ? (
+            <Files />
+          ) : (
+            "Dashboard Dashboard"
+          )}
         </Content>
       </Layout>
     </Layout>
