@@ -36,6 +36,24 @@ const Lab = (props) => {
     })();
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      const storage = firebase.storage();
+
+      const storageRef = await storage.ref();
+
+      const labItems = await storageRef.child(`${labId}`).listAll();
+
+      labItems.items.forEach(async (itemRef) => {
+        const imgURL = await storageRef
+          .child(itemRef.fullPath)
+          .getDownloadURL();
+
+        console.log(imgURL);
+      });
+    })();
+  }, []);
+
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -98,12 +116,18 @@ const Lab = (props) => {
       contentType: file.type,
     };
     const storageRef = await storage.ref();
+
     const fName = file.name;
 
     const imgFile = storageRef.child(`${labId}/${fName}`);
     try {
       const image = await imgFile.put(file, metadata);
       onSuccess(null, image);
+
+      const url = await imgFile.getDownloadURL();
+      //console.log("URL", url);
+
+      // const postURL = await async_func_data()
     } catch (e) {
       onError(e);
     }
