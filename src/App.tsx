@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import Dashboard from "./components/Dashboard/Dashboard";
 import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
+import LabCard from "./components/LabCard/LabCard";
 import Landing from "./components/Landing/Landing";
 import Login from "./components/Login/Login";
 import StudentDashboard from "./components/StudentDashboard/StudentDashboard";

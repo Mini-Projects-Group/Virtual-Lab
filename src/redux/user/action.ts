@@ -43,7 +43,10 @@ export const login_user =
           type: LOGIN_SUCCESS,
           payload: {
             token: response.data.token,
-            userData: response.data.user,
+            userData: {
+              ...response.data.user,
+              type,
+            },
           },
         });
 
@@ -104,7 +107,10 @@ export const getUser: any =
         type: USER_LOADED,
         payload: {
           token: localStorage.getItem("vl-token"),
-          userData: data,
+          userData: {
+            ...data,
+            type,
+          },
         },
       });
     } catch (err) {

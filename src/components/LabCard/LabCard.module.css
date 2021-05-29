@@ -1,0 +1,16 @@
+.root {
+  height: 300px;
+  width: 300px;
+  /* background-color: aqua; */
+
+  margin: 10px;
+
+  border-radius: 7px;
+
+  /* display: grid;
+  place-items: center; */
+}
+
+/* .skeleton {
+  background-color: chartreuse;
+} */

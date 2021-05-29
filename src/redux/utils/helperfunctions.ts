@@ -27,7 +27,8 @@ export const async_func_data = async (
 ): Promise<AxiosResponse<any>> => {
   try {
     if (isTokenRequired) {
-      axios.defaults.headers.Authorization = localStorage.getItem("vl-token");
+      axios.defaults.headers.Authorization =
+        "Bearer " + localStorage.getItem("vl-token");
     }
     const axiosConfig = axios_config(api, paramsOrObject, method);
 
