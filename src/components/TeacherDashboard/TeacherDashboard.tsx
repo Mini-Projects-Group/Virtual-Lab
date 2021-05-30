@@ -21,7 +21,7 @@ const TeacherDashboard = () => {
     collapsed: false,
   });
 
-  const [selectedOption, setSelectedOption] = useState<any>("");
+  const [selectedOption, setSelectedOption] = useState<any>("team");
 
   console.log(selectedOption);
 
@@ -72,7 +72,7 @@ const TeacherDashboard = () => {
         >
           {name}
         </div>
-        <Menu theme='dark' defaultSelectedKeys={["1"]} mode='inline'>
+        <Menu theme='dark' defaultSelectedKeys={["team"]} mode='inline'>
           <Menu.Item
             key='team'
             icon={<TeamOutlined />}

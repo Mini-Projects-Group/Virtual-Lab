@@ -4,11 +4,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { AppState } from "../../redux/reducer";
-import { PRIMARY, WHITE } from "../../reusables/constants";
-import query from "query-string";
+import { LIGHT1, PRIMARY, WHITE, LIGHT2 } from "../../reusables/constants";
+
 import { async_func_data } from "../../redux/utils/helperfunctions";
 import { UploadOutlined } from "@ant-design/icons";
 import firebase from "../../firebase";
+import { DownloadOutlined } from "@ant-design/icons";
+
+import styles from "./Lab.module.css";
 
 const { Sider, Content } = Layout;
 
@@ -70,6 +73,10 @@ const Lab = (props) => {
 
   const name = useSelector(
     (state: AppState) => state.userReducer?.userData?.name
+  );
+
+  const type = useSelector(
+    (state: AppState) => state.userReducer?.userData?.type
   );
 
   const handleLogout = async () => {
@@ -136,7 +143,15 @@ const Lab = (props) => {
     }
   };
 
-  const handleDownload = (item) => {};
+  const handleDownload = (item) => {
+    // Download(item.url);
+    //window.location.href = item.url;
+
+    let link = document.createElement("a");
+    link.href = item.url;
+    link.download = item.url;
+    link.click();
+  };
 
   console.log(resources);
 
@@ -196,26 +211,39 @@ const Lab = (props) => {
           }}
         >
           {page === "0" ? (
-            <Upload
-              beforeUpload={beforeUpload}
-              onChange={handleChange}
-              customRequest={customUpload}
-              name='file-upload'
-              action='gs://virtual-lab-storage.appspot.com'
-              // headers={{ authorization: "authorization-text" }}
-            >
-              <Button icon={<UploadOutlined />}>Click to Upload</Button>
-
-              {resources.length ? (
-                resources?.map((item, idx) => (
-                  <div key={idx} onClick={() => handleDownload(item)}>
-                    {item.name}
-                  </div>
-                ))
-              ) : (
-                <Spin />
-              )}
-            </Upload>
+            <>
+              {type === "faculty" ? (
+                <Upload
+                  beforeUpload={beforeUpload}
+                  onChange={handleChange}
+                  customRequest={customUpload}
+                  name='file-upload'
+                  action='gs://virtual-lab-storage.appspot.com'
+                  // headers={{ authorization: "authorization-text" }}
+                >
+                  <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                </Upload>
+              ) : null}
+              <div className={styles.resourcesParent}>
+                {resources.length ? (
+                  resources?.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className={styles.resourceCard}
+                      style={{ background: LIGHT2 }}
+                    >
+                      <p className={styles.cardTitle}>{item.name}</p>
+                      <DownloadOutlined
+                        onClick={() => handleDownload(item)}
+                        style={{ cursor: "pointer", fontSize: "150%" }}
+                      />
+                    </div>
+                  ))
+                ) : (
+                  <Spin />
+                )}
+              </div>
+            </>
           ) : null}
         </Content>
       </Layout>
