@@ -16,8 +16,6 @@ import styles from "./Lab.module.css";
 const { Sider, Content } = Layout;
 
 const Lab = (props) => {
-  // console.log(props);
-
   const { labId } = props?.match.params;
 
   const [labData, setLabData] = useState({});
@@ -35,7 +33,7 @@ const Lab = (props) => {
         true
       );
 
-      console.log(labs);
+      // console.log(labs);
 
       setLabData(labs.data.labData);
     })();
@@ -60,6 +58,11 @@ const Lab = (props) => {
         //console.log(imgURL);
       });
     })();
+
+    // clean up function
+    return () => {
+      setResources([]);
+    };
   }, []);
 
   const history = useHistory();
@@ -145,15 +148,8 @@ const Lab = (props) => {
 
   const handleDownload = (item) => {
     // Download(item.url);
-    //window.location.href = item.url;
-
-    let link = document.createElement("a");
-    link.href = item.url;
-    link.download = item.url;
-    link.click();
+    window.location.href = item.url;
   };
-
-  console.log(resources);
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
